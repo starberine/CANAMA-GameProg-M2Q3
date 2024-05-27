@@ -6,11 +6,12 @@ class GameScene extends Phaser.Scene {
     preload() {
         // Preload tilemap and its associated tileset
         this.load.tilemapTiledJSON('map', 'assets/tilemap/tilemap1.json');
+
         this.load.image('tiles', 'assets/tilemap/tileset.png');
-        
+                
         // Preload player sprite
         this.load.spritesheet('dude', 'assets/images/dude.png', { frameWidth: 64, frameHeight: 73 });
-
+        this.load.image('collect', 'assets/images/collect.png');
         //Preload aduio
         this.load.audio('jump_sfx', 'assets/audio/sfx/jump_sfx.mp3');
         this.load.audio('win_sfx', 'assets/audio/sfx/win_sfx.mp3');
@@ -76,10 +77,13 @@ class GameScene extends Phaser.Scene {
 
         // Initialize score
         this.score = 0;
+        this.collectibleCount = 0;
 
         // Display score
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontFamily:'Butter',fontSize: '32px', fill: '#152238' }).setScrollFactor(0);
-
+        this.collectibleImage = this.add.image(40, 80, 'collect').setScrollFactor(0);;
+        this.collectibleText = this.add.text(70, 60, 'x 0', { fontFamily:'Butter',fontSize: '32px', fill: '#152238' }).setScrollFactor(0);
+        
         // Set camera properties
         this.cameras.main.startFollow(this.player);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
@@ -120,8 +124,11 @@ class GameScene extends Phaser.Scene {
             tile.tilemapLayer.removeTileAt(tile.x, tile.y);
     
             // Update the score
-            this.score += 1;
+            this.score += 10;
             this.scoreText.setText('Score: ' + this.score);
+
+            this.collectibleCount += 1;
+            this.collectibleText.setText('x ' + this.collectibleCount);
     
             // Create the collect sound effect
             const collectSound = this.sound.add('collect_sfx');
@@ -131,7 +138,7 @@ class GameScene extends Phaser.Scene {
             collectSound.play();
     
             // Check if all collectibles are collected
-            const totalCollectibles = 5; // Adjust this number based on the total number of collectibles in your game
+            const totalCollectibles = 50; // Adjust this number based on the total number of collectibles in your game
             if (this.score === totalCollectibles) {
                 // Create the win sound effect
                 const winSound = this.sound.add('win_sfx');
