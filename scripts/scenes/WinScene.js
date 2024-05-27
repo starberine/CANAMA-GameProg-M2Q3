@@ -11,7 +11,7 @@ class WinScene extends Phaser.Scene {
         if (this.scene.get('MainMenuScene').bgm && this.scene.get('MainMenuScene').bgm.isPlaying) {
             this.scene.get('MainMenuScene').bgm.stop();
         }
-        // Add your win scene logic here
+        
         const winbg = this.add.image(400, 300, 'win').setDisplaySize(800, 600);
         
         const menuButton = this.add.image(400, 200, 'menuButton').setInteractive();
